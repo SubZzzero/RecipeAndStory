@@ -13,8 +13,10 @@ async function fetchRandomImage() {
 
     imgElement.src = item.largeImageURL;
     imgElement.alt = item.tags || "food";
+
+    console.log(item)
 }
 
-fetchRandomImage();
+
 
 button.addEventListener("click", fetchRandomImage);
