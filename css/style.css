@@ -187,7 +187,7 @@ body {
 /* Mobile */
 @media (max-width: 480px) {
     body {
-        font-size: 14px;
+        font-size: 16px;
     }
 
     .page-content {
