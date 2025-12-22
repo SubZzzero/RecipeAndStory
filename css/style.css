@@ -215,3 +215,36 @@ body {
         margin: 3px 0;
     }
 }
+
+@media (max-width: 480px) {
+    body {
+        font-size: 16px;
+    }
+
+    .page-content {
+        margin: 160px auto;
+    }
+
+    .image-inner {
+        height: 260px;
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    .main-img {
+        border-radius: 8px;
+    }
+
+    .footer {
+        height: auto;
+        padding: 8px 0;
+        position: relative;
+        top: 0;
+    }
+
+    .footer-creator,
+    .footer-db-image {
+        font-size: 12px;
+        margin: 3px 0;
+    }
+}
