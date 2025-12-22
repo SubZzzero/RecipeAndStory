@@ -139,3 +139,79 @@ body {
 
     color: white;
 }
+
+
+
+/* ADPT */
+
+@media (max-width: 1024px) {
+    .page-content {
+        margin: 60px auto;
+        padding: 0 15px;
+    }
+
+    .image-inner {
+        height: 420px;
+        padding: 20px;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    .header-inner {
+        height: auto;
+        padding: 10px 0;
+    }
+
+    .logo-header {
+        font-size: 18px;
+        padding: 6px 10px;
+    }
+
+    .github-logo {
+        width: 34px;
+        height: 34px;
+    }
+
+    .image-inner {
+        height: 360px;
+        padding: 15px;
+    }
+
+    .generate-btn {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+
+    .page-content {
+        margin: 200px auto;
+    }
+
+    .image-inner {
+        height: 260px;
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    .main-img {
+        border-radius: 8px;
+    }
+
+    .footer {
+        height: auto;
+        padding: 8px 0;
+    }
+
+    .footer-creator,
+    .footer-db-image {
+        font-size: 12px;
+        margin: 3px 0;
+    }
+}
