@@ -56,6 +56,7 @@ body {
     max-width: 900px;
     margin: 90px auto;
     text-align: center;
+    height: 100vh;
 }
 
 .image-section {
@@ -108,7 +109,7 @@ body {
 
 .footer {
     position: absolute;
-    bottom: 0;
+
 
     width: 100%;
     height: 50px;
@@ -146,13 +147,20 @@ body {
 
 @media (max-width: 1024px) {
     .page-content {
-        margin: 60px auto;
+        margin: 250px auto;
         padding: 0 15px;
     }
 
     .image-inner {
         height: 420px;
         padding: 20px;
+    }
+
+    .footer {
+        height: auto;
+        padding: 8px 0;
+        position: relative;
+        top: 0;
     }
 }
 
@@ -181,6 +189,13 @@ body {
     .generate-btn {
         width: 100%;
         max-width: 300px;
+    }
+
+    .footer {
+        height: auto;
+        padding: 8px 0;
+        position: relative;
+        top: 0;
     }
 }
 
