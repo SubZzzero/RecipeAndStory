@@ -4,9 +4,9 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
-        <a className={styles.brand} href="/" aria-label="Foodsum home">
+        <span className={styles.brand} aria-label="Foodsum logo">
           F.
-        </a>
+        </span>
         <a
           className={styles.github}
           href="https://github.com/SubZzzero"

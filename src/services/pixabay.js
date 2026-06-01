@@ -14,14 +14,17 @@ export async function fetchRandomFoodImage(signal) {
     per_page: '200',
     safesearch: 'true',
   })
+  const requestUrl = `${PIXABAY_API_URL}?${params.toString()}`
+  console.log('Pixabay request URL:', requestUrl)
 
-  const response = await fetch(`${PIXABAY_API_URL}?${params.toString()}`, { signal })
+  const response = await fetch(requestUrl, { signal })
 
   if (!response.ok) {
     throw new Error(`Pixabay request failed with status ${response.status}`)
   }
 
   const data = await response.json()
+  console.log('Pixabay response body:', data)
 
   if (!data.hits || data.hits.length === 0) {
     return null
@@ -29,6 +32,7 @@ export async function fetchRandomFoodImage(signal) {
 
   const randomIndex = Math.floor(Math.random() * data.hits.length)
   const hit = data.hits[randomIndex]
+  console.log('Pixabay selected random hit:', hit)
 
   return {
     imageUrl: hit.largeImageURL,

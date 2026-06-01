@@ -31,6 +31,16 @@
   transition: opacity 0.35s ease, filter 0.35s ease;
 }
 
+.placeholder {
+  width: 100%;
+  min-height: inherit;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
 .meta {
   display: grid;
   gap: 0.4rem;

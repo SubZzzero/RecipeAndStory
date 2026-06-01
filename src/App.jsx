@@ -6,7 +6,6 @@ import Footer from './components/Footer'
 import { fetchRandomFoodImage } from './services/pixabay'
 import styles from './App.module.css'
 
-const DEFAULT_IMAGE = '/img/default_2.png'
 const MIN_TRANSITION_MS = 320
 
 function preloadImage(url) {
@@ -138,18 +137,21 @@ function getStatusMessage(status) {
 }
 
 export default function App() {
-  const [status, setStatus] = useState('idle')
+  const [status, setStatus] = useState('loading')
   const [image, setImage] = useState({
-    imageUrl: DEFAULT_IMAGE,
-    imageAlt: 'Default food placeholder',
+    imageUrl: '',
+    imageAlt: 'Food image',
     imageLink: '',
     author: 'Foodsum',
   })
 
   const requestControllerRef = useRef(null)
   const bgAnimationCleanupRef = useRef(null)
+  const hasAppliedDynamicBgRef = useRef(false)
 
-  const handleRandomPhoto = useCallback(async () => {
+  const handleRandomPhoto = useCallback(async (options = {}) => {
+    const { isInitial = false } = options
+
     if (requestControllerRef.current) {
       requestControllerRef.current.abort()
     }
@@ -160,9 +162,13 @@ export default function App() {
     setStatus('loading')
 
     try {
+      const waitTransition = isInitial
+        ? Promise.resolve()
+        : new Promise((resolve) => setTimeout(resolve, MIN_TRANSITION_MS))
+
       const [nextImage] = await Promise.all([
         fetchRandomFoodImage(controller.signal),
-        new Promise((resolve) => setTimeout(resolve, MIN_TRANSITION_MS)),
+        waitTransition,
       ])
 
       if (!nextImage) {
@@ -182,10 +188,14 @@ export default function App() {
   }, [])
 
   useEffect(() => {
+    handleRandomPhoto({ isInitial: true })
+  }, [handleRandomPhoto])
+
+  useEffect(() => {
     let isActive = true
 
     const applyDynamicBackground = async () => {
-      if (!image.imageUrl || image.imageUrl === DEFAULT_IMAGE) {
+      if (!image.imageUrl) {
         return
       }
 
@@ -208,6 +218,15 @@ export default function App() {
           rootStyle.getPropertyValue('--bg-glow-right'),
           glowRightTint,
         )
+
+        if (!hasAppliedDynamicBgRef.current) {
+          document.documentElement.style.setProperty('--bg-1', rgbToCss(lightTint))
+          document.documentElement.style.setProperty('--bg-2', rgbToCss(midTint))
+          document.documentElement.style.setProperty('--bg-glow-left', rgbToCss(glowLeftTint))
+          document.documentElement.style.setProperty('--bg-glow-right', rgbToCss(glowRightTint))
+          hasAppliedDynamicBgRef.current = true
+          return
+        }
 
         if (bgAnimationCleanupRef.current) {
           bgAnimationCleanupRef.current()

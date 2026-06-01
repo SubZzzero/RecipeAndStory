@@ -17,7 +17,11 @@ export default function ImageCard({ imageUrl, imageAlt, imageLink, status, messa
           }
         }}
       >
-        <img className={styles.image} src={imageUrl} alt={imageAlt} loading="eager" />
+        {imageUrl ? (
+          <img className={styles.image} src={imageUrl} alt={imageAlt} loading="eager" />
+        ) : (
+          <div className={styles.placeholder}>Loading first image...</div>
+        )}
       </a>
 
       <div className={styles.meta}>

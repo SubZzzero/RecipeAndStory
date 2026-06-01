@@ -7,8 +7,8 @@
   --bg-0: #fff9f2;
   --bg-1: #ffe4be;
   --bg-2: #ffc07a;
-  --bg-glow-left: rgba(255, 243, 223, 0.95);
-  --bg-glow-right: rgba(255, 207, 146, 0.92);
+  --bg-glow-left: rgb(255, 243, 223);
+  --bg-glow-right: rgb(255, 207, 146);
   --surface: rgba(255, 255, 255, 0.82);
   --surface-border: rgba(141, 83, 30, 0.22);
 
