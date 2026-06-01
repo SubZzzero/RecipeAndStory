@@ -84,8 +84,3 @@ src/
   styles/          # Global styles
   App.jsx          # Main app logic and UI
 ```
-
-## Notes
-
-- If `VITE_PIXABAY_KEY` is missing, photo loading will fail.
-- In rare cases, browser/CORS rules can prevent color extraction; in this case default background colors stay active.
