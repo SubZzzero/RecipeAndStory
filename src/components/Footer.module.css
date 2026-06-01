@@ -1,0 +1,24 @@
+.footer {
+  width: var(--container);
+  margin-inline: auto;
+  padding: var(--space-3) 0 var(--space-4);
+  display: grid;
+  gap: 0.35rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: clamp(0.8rem, 0.75rem + 0.2vw, 0.95rem);
+}
+
+.footer p {
+  margin: 0;
+}
+
+.footer a {
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.footer a:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}

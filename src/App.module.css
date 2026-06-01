@@ -1,0 +1,57 @@
+.appShell {
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  overflow: hidden;
+}
+
+.main {
+  width: var(--container);
+  margin-inline: auto;
+  padding: var(--space-3) 0 var(--space-3);
+  display: grid;
+  gap: var(--space-3);
+  min-height: 0;
+}
+
+.hero {
+  text-align: center;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.eyebrow {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: clamp(0.72rem, 0.68rem + 0.3vw, 0.95rem);
+  color: var(--accent);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 1.2rem + 2.1vw, 3.4rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.subtitle {
+  margin: 0 auto;
+  color: var(--text-muted);
+  max-width: 62ch;
+  font-size: clamp(0.9rem, 0.86rem + 0.24vw, 1.05rem);
+}
+
+.actions {
+  display: grid;
+  place-items: center;
+}
+
+@media (min-width: 48rem) {
+  .main {
+    gap: var(--space-5);
+  }
+}

@@ -1,0 +1,63 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(14px);
+  background: color-mix(in hsl, var(--bg-0), transparent 18%);
+  border-bottom: 1px solid rgba(141, 83, 30, 0.12);
+}
+
+.inner {
+  width: var(--container);
+  margin-inline: auto;
+  min-height: clamp(4rem, 3.7rem + 1vw, 4.8rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 0.38rem 0.78rem;
+  border-radius: 0.75rem;
+  background: #17110b;
+  color: #fff;
+  font-family: 'Montserrat', 'Segoe UI', sans-serif;
+  font-style: italic;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.github {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 0;
+  border: 0;
+  background: transparent;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.github img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.github:hover {
+  background: transparent;
+}
+
+.github:focus-visible,
+.brand:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
