@@ -15,7 +15,7 @@ export async function fetchRandomFoodImage(signal) {
     safesearch: 'true',
   })
   const requestUrl = `${PIXABAY_API_URL}?${params.toString()}`
-  console.log('Pixabay request URL:', requestUrl)
+
 
   const response = await fetch(requestUrl, { signal })
 
@@ -24,7 +24,7 @@ export async function fetchRandomFoodImage(signal) {
   }
 
   const data = await response.json()
-  console.log('Pixabay response body:', data)
+
 
   if (!data.hits || data.hits.length === 0) {
     return null
