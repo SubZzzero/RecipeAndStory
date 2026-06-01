@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Header from './components/Header'
 import ImageCard from './components/ImageCard'
 import RandomButton from './components/RandomButton'
@@ -18,6 +18,118 @@ function preloadImage(url) {
   })
 }
 
+function clampColor(value) {
+  return Math.max(0, Math.min(255, Math.round(value)))
+}
+
+function rgbToCss(rgb) {
+  return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`
+}
+
+function parseRgbString(value, fallback) {
+  const match = value.match(/\d+/g)
+  if (!match || match.length < 3) return fallback
+  return {
+    r: clampColor(Number(match[0])),
+    g: clampColor(Number(match[1])),
+    b: clampColor(Number(match[2])),
+  }
+}
+
+function tintColor(rgb, amount) {
+  return {
+    r: clampColor(rgb.r + (255 - rgb.r) * amount),
+    g: clampColor(rgb.g + (255 - rgb.g) * amount),
+    b: clampColor(rgb.b + (255 - rgb.b) * amount),
+  }
+}
+
+async function extractAverageColor(imageUrl) {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d', { willReadFrequently: true })
+        const size = 28
+        canvas.width = size
+        canvas.height = size
+        ctx.drawImage(img, 0, 0, size, size)
+
+        const { data } = ctx.getImageData(0, 0, size, size)
+        let r = 0
+        let g = 0
+        let b = 0
+        let count = 0
+
+        for (let i = 0; i < data.length; i += 4) {
+          r += data[i]
+          g += data[i + 1]
+          b += data[i + 2]
+          count += 1
+        }
+
+        resolve({
+          r: clampColor(r / count),
+          g: clampColor(g / count),
+          b: clampColor(b / count),
+        })
+      } catch (error) {
+        reject(error)
+      }
+    }
+    img.onerror = reject
+    img.src = imageUrl
+  })
+}
+
+function animateBackgroundColors(from1, to1, from2, to2, fromGlowLeft, toGlowLeft, fromGlowRight, toGlowRight, duration = 650) {
+  let frameId = null
+  const start = performance.now()
+
+  const tick = (now) => {
+    const progress = Math.min(1, (now - start) / duration)
+    const eased = 1 - Math.pow(1 - progress, 3)
+    const mix = (a, b) => clampColor(a + (b - a) * eased)
+
+    const next1 = {
+      r: mix(from1.r, to1.r),
+      g: mix(from1.g, to1.g),
+      b: mix(from1.b, to1.b),
+    }
+    const next2 = {
+      r: mix(from2.r, to2.r),
+      g: mix(from2.g, to2.g),
+      b: mix(from2.b, to2.b),
+    }
+    const nextGlowLeft = {
+      r: mix(fromGlowLeft.r, toGlowLeft.r),
+      g: mix(fromGlowLeft.g, toGlowLeft.g),
+      b: mix(fromGlowLeft.b, toGlowLeft.b),
+    }
+    const nextGlowRight = {
+      r: mix(fromGlowRight.r, toGlowRight.r),
+      g: mix(fromGlowRight.g, toGlowRight.g),
+      b: mix(fromGlowRight.b, toGlowRight.b),
+    }
+
+    document.documentElement.style.setProperty('--bg-1', rgbToCss(next1))
+    document.documentElement.style.setProperty('--bg-2', rgbToCss(next2))
+    document.documentElement.style.setProperty('--bg-glow-left', rgbToCss(nextGlowLeft))
+    document.documentElement.style.setProperty('--bg-glow-right', rgbToCss(nextGlowRight))
+
+    if (progress < 1) {
+      frameId = requestAnimationFrame(tick)
+    }
+  }
+
+  frameId = requestAnimationFrame(tick)
+  return () => {
+    if (frameId) cancelAnimationFrame(frameId)
+  }
+}
+
 function getStatusMessage(status) {
   if (status === 'loading') return 'Collecting a fresh meal shot...'
   if (status === 'error') return 'Something went wrong. Please try again.'
@@ -35,6 +147,7 @@ export default function App() {
   })
 
   const requestControllerRef = useRef(null)
+  const bgAnimationCleanupRef = useRef(null)
 
   const handleRandomPhoto = useCallback(async () => {
     if (requestControllerRef.current) {
@@ -67,6 +180,63 @@ export default function App() {
       setStatus('error')
     }
   }, [])
+
+  useEffect(() => {
+    let isActive = true
+
+    const applyDynamicBackground = async () => {
+      if (!image.imageUrl || image.imageUrl === DEFAULT_IMAGE) {
+        return
+      }
+
+      try {
+        const avgColor = await extractAverageColor(image.imageUrl)
+        if (!isActive) return
+
+        const midTint = tintColor(avgColor, 0.45)
+        const lightTint = tintColor(avgColor, 0.7)
+        const glowLeftTint = tintColor(avgColor, 0.8)
+        const glowRightTint = tintColor(avgColor, 0.62)
+        const rootStyle = getComputedStyle(document.documentElement)
+        const currentBg1 = parseRgbString(rootStyle.getPropertyValue('--bg-1'), lightTint)
+        const currentBg2 = parseRgbString(rootStyle.getPropertyValue('--bg-2'), midTint)
+        const currentGlowLeft = parseRgbString(
+          rootStyle.getPropertyValue('--bg-glow-left'),
+          glowLeftTint,
+        )
+        const currentGlowRight = parseRgbString(
+          rootStyle.getPropertyValue('--bg-glow-right'),
+          glowRightTint,
+        )
+
+        if (bgAnimationCleanupRef.current) {
+          bgAnimationCleanupRef.current()
+        }
+
+        bgAnimationCleanupRef.current = animateBackgroundColors(
+          currentBg1,
+          lightTint,
+          currentBg2,
+          midTint,
+          currentGlowLeft,
+          glowLeftTint,
+          currentGlowRight,
+          glowRightTint,
+        )
+      } catch {
+        // Keep default colors if canvas sampling is blocked by CORS or fails.
+      }
+    }
+
+    applyDynamicBackground()
+
+    return () => {
+      isActive = false
+      if (bgAnimationCleanupRef.current) {
+        bgAnimationCleanupRef.current()
+      }
+    }
+  }, [image.imageUrl])
 
   const isLoading = status === 'loading'
 

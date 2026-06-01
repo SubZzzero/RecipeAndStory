@@ -7,6 +7,8 @@
   --bg-0: #fff9f2;
   --bg-1: #ffe4be;
   --bg-2: #ffc07a;
+  --bg-glow-left: rgba(255, 243, 223, 0.95);
+  --bg-glow-right: rgba(255, 207, 146, 0.92);
   --surface: rgba(255, 255, 255, 0.82);
   --surface-border: rgba(141, 83, 30, 0.22);
 
@@ -52,8 +54,8 @@ body {
   font-family: var(--font-body);
   color: var(--text-main);
   background:
-    radial-gradient(circle at 12% 18%, rgba(255, 243, 223, 0.95), transparent 34%),
-    radial-gradient(circle at 92% 10%, rgba(255, 207, 146, 0.92), transparent 36%),
+    radial-gradient(circle at 12% 18%, var(--bg-glow-left), transparent 34%),
+    radial-gradient(circle at 92% 10%, var(--bg-glow-right), transparent 36%),
     linear-gradient(155deg, var(--bg-0), var(--bg-1) 45%, var(--bg-2));
   line-height: 1.5;
   overflow-x: hidden;
