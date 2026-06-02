@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import styles from './DetailModal.module.css'
 
 export default function DetailModal({ title, subtitle, imageUrl, imageAlt, children, sourceUrl, onClose }) {
+  const modalClassName = imageUrl ? styles.modal : `${styles.modal} ${styles.textOnlyModal}`
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
@@ -19,7 +21,7 @@ export default function DetailModal({ title, subtitle, imageUrl, imageAlt, child
   return (
     <div className={styles.backdrop} role="presentation" onMouseDown={onClose}>
       <section
-        className={styles.modal}
+        className={modalClassName}
         role="dialog"
         aria-modal="true"
         aria-labelledby="foodsum-modal-title"

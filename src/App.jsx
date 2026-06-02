@@ -161,6 +161,36 @@ function getRecipeMeta(recipe) {
   return parts.join(' · ')
 }
 
+function stripStepPrefix(step) {
+  return step
+    .replace(/^step\s*\d+\s*[:.)-]?\s*/i, '')
+    .replace(/^\d+\s*[:.)-]\s*/, '')
+    .trim()
+}
+
+function getRecipeSteps(instructions) {
+  if (!instructions) return []
+
+  const normalized = instructions.replace(/\r/g, '\n').replace(/[ \t]+\n/g, '\n').trim()
+  if (!normalized) return []
+
+  const lineSteps = normalized
+    .split(/\n+/)
+    .map(stripStepPrefix)
+    .filter(Boolean)
+
+  if (lineSteps.length > 1) {
+    return lineSteps
+  }
+
+  const sentenceSteps = normalized
+    .split(/(?<=[.!?])\s+(?=(?:step\s*)?\d+[:.)-]?|[A-Z])/i)
+    .map(stripStepPrefix)
+    .filter(Boolean)
+
+  return sentenceSteps.length > 1 ? sentenceSteps : [normalized]
+}
+
 function getDiscoveryFallback() {
   return {
     story: {
@@ -347,6 +377,7 @@ export default function App() {
   const topicLabel = discovery.topic?.label || 'Food'
   const storyImageUrl = discovery.story.imageUrl || image.imageUrl
   const storyImageAlt = discovery.story.imageAlt || image.imageAlt
+  const recipeSteps = discovery.recipe ? getRecipeSteps(discovery.recipe.instructions) : []
 
   return (
     <div className={styles.appShell}>
@@ -424,25 +455,42 @@ export default function App() {
         <DetailModal
           title={discovery.recipe?.title || 'Recipe inspiration'}
           subtitle={getRecipeMeta(discovery.recipe)}
-          imageUrl={discovery.recipe?.imageUrl || image.imageUrl}
-          imageAlt={discovery.recipe?.title || image.imageAlt}
           sourceUrl={discovery.recipe?.sourceUrl}
           onClose={() => setActiveDetail(null)}
         >
           {discovery.recipe ? (
-            <>
-              <p>{discovery.recipe.instructions}</p>
+            <div className={styles.recipeDetail}>
+              <section className={styles.recipeSection} aria-labelledby="recipe-steps-heading">
+                <h3 className={styles.sectionHeading} id="recipe-steps-heading">
+                  Cooking steps
+                </h3>
+                <ol className={styles.stepList}>
+                  {recipeSteps.map((step, index) => (
+                    <li className={styles.stepItem} key={`${index}-${step.slice(0, 24)}`}>
+                      <span className={styles.stepNumber} aria-hidden="true">
+                        {index + 1}
+                      </span>
+                      <p className={styles.stepText}>{step}</p>
+                    </li>
+                  ))}
+                </ol>
+              </section>
+
               {discovery.recipe.ingredients.length > 0 ? (
-                <div>
-                  <strong>Ingredients</strong>
-                  <ul>
+                <section className={styles.recipeSection} aria-labelledby="recipe-ingredients-heading">
+                  <h3 className={styles.sectionHeading} id="recipe-ingredients-heading">
+                    Ingredients
+                  </h3>
+                  <ul className={styles.ingredientList}>
                     {discovery.recipe.ingredients.map((ingredient) => (
-                      <li key={ingredient}>{ingredient}</li>
+                      <li className={styles.ingredientItem} key={ingredient}>
+                        {ingredient}
+                      </li>
                     ))}
                   </ul>
-                </div>
+                </section>
               ) : null}
-            </>
+            </div>
           ) : (
             <p>The recipe service did not return a usable match, but the photo and story are still ready.</p>
           )}

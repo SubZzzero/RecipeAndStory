@@ -74,6 +74,94 @@
   height: 100%;
 }
 
+.recipeDetail {
+  display: grid;
+  gap: 1.35rem;
+}
+
+.recipeSection {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.sectionHeading {
+  margin: 0;
+  color: var(--text-main);
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 0.96rem + 0.34vw, 1.35rem);
+  line-height: 1.12;
+}
+
+.stepList {
+  display: grid;
+  gap: 0.72rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stepItem {
+  display: grid;
+  grid-template-columns: 2.1rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: start;
+  padding: 0.85rem;
+  border: 1px solid rgba(95, 67, 38, 0.14);
+  border-radius: var(--radius-s);
+  background: rgba(255, 255, 255, 0.54);
+}
+
+.stepNumber {
+  width: 2.1rem;
+  height: 2.1rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--accent);
+  font-size: 0.88rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.stepText {
+  margin: 0;
+  color: var(--text-main);
+  line-height: 1.58;
+}
+
+.ingredientList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ingredientItem {
+  position: relative;
+  min-width: 0;
+  padding: 0.58rem 0.7rem 0.58rem 1.55rem;
+  border: 1px solid rgba(95, 67, 38, 0.12);
+  border-radius: var(--radius-s);
+  background: rgba(255, 250, 244, 0.8);
+  color: var(--text-main);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.ingredientItem::before {
+  content: '';
+  position: absolute;
+  top: 0.98rem;
+  left: 0.7rem;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
 @media (min-width: 48rem) {
   .main {
     gap: 0.75rem;
