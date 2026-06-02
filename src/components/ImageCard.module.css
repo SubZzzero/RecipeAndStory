@@ -1,5 +1,6 @@
 .card {
   display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   gap: var(--space-2);
   width: min(100%, 70rem);
   margin-inline: auto;
@@ -43,12 +44,71 @@
 
 .meta {
   display: grid;
-  gap: 0.55rem;
+  align-content: start;
+  gap: 0.75rem;
+  min-height: 0;
 }
 
 .status {
   margin: 0;
   font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.06rem);
+}
+
+.infoPanel {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  padding: 0.85rem;
+  border: 1px solid rgba(141, 83, 30, 0.18);
+  border-radius: var(--radius-m);
+  background: rgba(255, 247, 237, 0.62);
+}
+
+.infoPanel > div {
+  min-width: 0;
+}
+
+.infoPanel strong {
+  display: block;
+  overflow: hidden;
+  color: var(--text-main);
+  font-size: clamp(0.92rem, 0.86rem + 0.18vw, 1rem);
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.infoLabel {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.32rem;
+  max-height: 3.2rem;
+  overflow: hidden;
+}
+
+.tags span {
+  max-width: 100%;
+  padding: 0.22rem 0.5rem;
+  border-radius: 999px;
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.74);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .author {
@@ -71,11 +131,18 @@
 
 @media (min-width: 64rem) {
   .card {
+    height: 100%;
     padding: var(--space-3);
   }
 
   .imageLink {
     height: clamp(16rem, 46dvh, 27rem);
+  }
+}
+
+@media (max-width: 42rem) {
+  .infoPanel {
+    grid-template-columns: 1fr;
   }
 }
 

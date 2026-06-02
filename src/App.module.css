@@ -87,6 +87,7 @@
 
   .discoveryGrid {
     grid-template-columns: minmax(0, 1.04fr) minmax(29rem, 0.96fr);
+    height: clamp(42rem, 70dvh, 49rem);
   }
 
   .photoPanel {

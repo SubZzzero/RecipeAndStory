@@ -368,6 +368,8 @@ export default function App() {
               status={status}
               message={getStatusMessage(status)}
               author={image.author}
+              tags={image.tags}
+              topicLabel={topicLabel}
               isLoading={isLoading}
               onRandomPhoto={handleRandomPhoto}
             />

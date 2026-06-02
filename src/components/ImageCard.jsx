@@ -8,10 +8,13 @@ export default function ImageCard({
   status,
   message,
   author,
+  tags = [],
+  topicLabel = 'Food',
   isLoading,
   onRandomPhoto,
 }) {
   const cardClass = `${styles.card} ${status === 'loading' ? styles.loading : ''}`
+  const visibleTags = tags.slice(0, 4)
 
   return (
     <section className={cardClass} aria-live="polite">
@@ -36,6 +39,28 @@ export default function ImageCard({
 
       <div className={styles.meta}>
         <p className={styles.status}>{message}</p>
+        <div className={styles.infoPanel}>
+          <div>
+            <span className={styles.infoLabel}>Current topic</span>
+            <strong>{topicLabel}</strong>
+          </div>
+
+          <div>
+            <span className={styles.infoLabel}>Image tags</span>
+            <div className={styles.tags} aria-label="Image tags">
+              {visibleTags.length > 0 ? (
+                visibleTags.map((tag) => <span key={tag}>{tag}</span>)
+              ) : (
+                <span>food</span>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <span className={styles.infoLabel}>Source</span>
+            <strong>Pixabay</strong>
+          </div>
+        </div>
         <p className={styles.author}>Photo by {author}</p>
       </div>
 

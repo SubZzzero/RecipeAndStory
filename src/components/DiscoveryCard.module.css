@@ -140,6 +140,7 @@
 
 @media (min-width: 70rem) {
   .card {
-    min-height: clamp(18rem, 31dvh, 23rem);
+    height: 100%;
+    min-height: 0;
   }
 }
