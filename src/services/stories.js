@@ -107,6 +107,19 @@ function getCuratedStory(topic) {
   return CURATED_STORIES[topic.id]
 }
 
+function getWikipediaImage(data) {
+  const imageUrl = data.thumbnail?.source || data.originalimage?.source
+
+  if (!imageUrl) {
+    return {}
+  }
+
+  return {
+    imageUrl,
+    imageAlt: data.title ? `${data.title} image from Wikipedia` : 'Wikipedia food image',
+  }
+}
+
 function toStoryFromWikipedia(data, topic) {
   const extract = data.extract || ''
 
@@ -120,18 +133,12 @@ function toStoryFromWikipedia(data, topic) {
     sourceUrl: data.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${topic.wikiTitle}`,
     excerpt: extract.length > 180 ? `${extract.slice(0, 177).trim()}...` : extract,
     body: extract,
+    ...getWikipediaImage(data),
   }
 }
 
 export async function fetchFoodStory(topic, signal) {
   const curated = getCuratedStory(topic)
-
-  if (curated) {
-    return {
-      ...curated,
-      topicLabel: topic.label,
-    }
-  }
 
   try {
     const response = await fetch(`${WIKIPEDIA_SUMMARY_URL}${encodeURIComponent(topic.wikiTitle)}`, {
@@ -142,7 +149,17 @@ export async function fetchFoodStory(topic, signal) {
       throw new Error(`Wikipedia request failed with status ${response.status}`)
     }
 
-    const story = toStoryFromWikipedia(await response.json(), topic)
+    const wikipediaData = await response.json()
+
+    if (curated) {
+      return {
+        ...curated,
+        ...getWikipediaImage(wikipediaData),
+        topicLabel: topic.label,
+      }
+    }
+
+    const story = toStoryFromWikipedia(wikipediaData, topic)
 
     return {
       ...(story || GENERIC_STORY),
@@ -151,6 +168,13 @@ export async function fetchFoodStory(topic, signal) {
   } catch (error) {
     if (error.name === 'AbortError') {
       throw error
+    }
+
+    if (curated) {
+      return {
+        ...curated,
+        topicLabel: topic.label,
+      }
     }
 
     return {

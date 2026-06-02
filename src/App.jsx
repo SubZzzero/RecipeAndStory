@@ -345,6 +345,8 @@ export default function App() {
     ? 'Checking TheMealDB for a recipe that fits the detected food topic.'
     : getPreviewRecipeText(discovery.recipe)
   const topicLabel = discovery.topic?.label || 'Food'
+  const storyImageUrl = discovery.story.imageUrl || image.imageUrl
+  const storyImageAlt = discovery.story.imageAlt || image.imageAlt
 
   return (
     <div className={styles.appShell}>
@@ -380,8 +382,8 @@ export default function App() {
               eyebrow="Today’s food story"
               title={storyTitle}
               text={storyText}
-              imageUrl={image.imageUrl}
-              imageAlt={image.imageAlt}
+              imageUrl={storyImageUrl}
+              imageAlt={storyImageAlt}
               meta={isLoading ? 'Resolving tags' : discovery.story.sourceLabel}
               buttonLabel="Read full story"
               isLoading={isLoading}
@@ -409,8 +411,8 @@ export default function App() {
         <DetailModal
           title={discovery.story.title}
           subtitle={`${topicLabel} story`}
-          imageUrl={image.imageUrl}
-          imageAlt={image.imageAlt}
+          imageUrl={storyImageUrl}
+          imageAlt={storyImageAlt}
           sourceUrl={discovery.story.sourceUrl}
           onClose={() => setActiveDetail(null)}
         >
