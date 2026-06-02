@@ -1,11 +1,15 @@
 # Foodsum
 
-Foodsum is a React + Vite app that shows random high-resolution food photos from Pixabay.
+Foodsum is a React + Vite app that turns random high-resolution Pixabay food photos into a small food discovery: image, detected topic, short story, and recipe inspiration.
 
 ## Features
 
 - Random food photo on initial load.
 - "Random photo" button to fetch a new image.
+- Pixabay tag normalization with a curated food-topic resolver.
+- Food story cards from curated notes with Wikipedia summary fallback.
+- Recipe cards from TheMealDB with related inspiration fallback.
+- Detail modals for full stories, instructions, ingredients, and source links.
 - Smooth transition between images.
 - Dynamic background color based on the selected photo.
 - Link to the original Pixabay page and photo author attribution.
@@ -16,6 +20,8 @@ Foodsum is a React + Vite app that shows random high-resolution food photos from
 - Vite 8
 - CSS Modules
 - Pixabay REST API
+- TheMealDB free v1 API
+- Wikipedia summary API
 
 ## Getting Started
 
@@ -27,7 +33,7 @@ npm install
 
 ### 2. Configure environment variables
 
-Create `.env` from `.env.example` and provide your Pixabay API key:
+Create `.env` from `.env.example` and provide your Pixabay API key. TheMealDB v1 and Wikipedia summary requests do not need project-specific keys for this app.
 
 ```bash
 cp .env.example .env
@@ -63,4 +69,3 @@ The output will be generated in `dist/`.
 ## Deploy
 
 The repository includes `firebase.json` configured for Firebase Hosting with SPA rewrites to `index.html`.
-

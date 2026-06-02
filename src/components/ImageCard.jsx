@@ -1,6 +1,16 @@
 import styles from './ImageCard.module.css'
+import RandomButton from './RandomButton'
 
-export default function ImageCard({ imageUrl, imageAlt, imageLink, status, message, author }) {
+export default function ImageCard({
+  imageUrl,
+  imageAlt,
+  imageLink,
+  status,
+  message,
+  author,
+  isLoading,
+  onRandomPhoto,
+}) {
   const cardClass = `${styles.card} ${status === 'loading' ? styles.loading : ''}`
 
   return (
@@ -27,6 +37,10 @@ export default function ImageCard({ imageUrl, imageAlt, imageLink, status, messa
       <div className={styles.meta}>
         <p className={styles.status}>{message}</p>
         <p className={styles.author}>Photo by {author}</p>
+      </div>
+
+      <div className={styles.actions}>
+        <RandomButton isLoading={isLoading} onClick={onRandomPhoto} />
       </div>
     </section>
   )

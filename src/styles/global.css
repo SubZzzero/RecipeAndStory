@@ -59,7 +59,7 @@ body {
     linear-gradient(155deg, var(--bg-0), var(--bg-1) 45%, var(--bg-2));
   line-height: 1.5;
   overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 
 a {

@@ -1,15 +1,15 @@
 .button {
-  min-height: 48px;
-  min-width: min(100%, 18rem);
+  height: 42px;
+  min-width: min(100%, 12.5rem);
   border: 0;
   border-radius: 999px;
-  padding: 0.85rem 1.4rem;
+  padding: 0.68rem 1.05rem;
   font: inherit;
   font-weight: 700;
-  font-size: clamp(1rem, 0.95rem + 0.2vw, 1.1rem);
+  font-size: clamp(0.92rem, 0.88rem + 0.16vw, 1rem);
   color: #fff;
   background: #000;
-  box-shadow: var(--shadow-elevated);
+  box-shadow: 0 12px 26px rgba(23, 17, 11, 0.2);
   cursor: pointer;
   transition: background-color 0.2s ease;
 }

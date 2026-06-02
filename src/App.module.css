@@ -1,23 +1,23 @@
 .appShell {
-  height: 100dvh;
+  min-height: 100dvh;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  overflow: hidden;
 }
 
 .main {
   width: var(--container);
   margin-inline: auto;
-  padding: var(--space-3) 0 var(--space-3);
+  padding: var(--space-2) 0 var(--space-2);
   display: grid;
-  gap: var(--space-3);
+  gap: 0.75rem;
+  align-content: center;
   min-height: 0;
 }
 
 .hero {
   text-align: center;
   display: grid;
-  gap: var(--space-2);
+  gap: 0.35rem;
 }
 
 .eyebrow {
@@ -43,15 +43,56 @@
   color: var(--text-muted);
   max-width: 62ch;
   font-size: clamp(0.9rem, 0.86rem + 0.24vw, 1.05rem);
+  line-height: 1.35;
 }
 
-.actions {
+.discoveryGrid {
   display: grid;
-  place-items: center;
+  gap: var(--space-3);
+  width: min(100%, 82rem);
+  margin-inline: auto;
+  align-self: center;
+  align-items: stretch;
+}
+
+.photoPanel {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.companionPanel {
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  min-width: 0;
+  min-height: 0;
+}
+
+.companionPanel > * {
+  height: 100%;
 }
 
 @media (min-width: 48rem) {
   .main {
-    gap: var(--space-5);
+    gap: 0.75rem;
+  }
+}
+
+@media (min-width: 70rem) {
+  .main {
+    gap: 1rem;
+  }
+
+  .discoveryGrid {
+    grid-template-columns: minmax(0, 1.04fr) minmax(29rem, 0.96fr);
+  }
+
+  .photoPanel {
+    height: 100%;
+  }
+
+  .companionPanel {
+    height: 100%;
   }
 }
