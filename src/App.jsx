@@ -11,6 +11,7 @@ import { fetchRecipeForTopic } from './services/recipes'
 import styles from './App.module.css'
 
 const MIN_TRANSITION_MS = 320
+const RECENT_IMAGE_LIMIT = 30
 
 function preloadImage(url) {
   return new Promise((resolve, reject) => {
@@ -222,8 +223,18 @@ export default function App() {
   const [activeDetail, setActiveDetail] = useState(null)
 
   const requestControllerRef = useRef(null)
+  const recentImageIdsRef = useRef([])
   const bgAnimationCleanupRef = useRef(null)
   const hasAppliedDynamicBgRef = useRef(false)
+
+  const rememberImageId = useCallback((imageId) => {
+    if (!imageId) return
+
+    recentImageIdsRef.current = [
+      imageId,
+      ...recentImageIdsRef.current.filter((recentImageId) => recentImageId !== imageId),
+    ].slice(0, RECENT_IMAGE_LIMIT)
+  }, [])
 
   const handleRandomPhoto = useCallback(async (options = {}) => {
     const { isInitial = false } = options
@@ -244,7 +255,9 @@ export default function App() {
         : new Promise((resolve) => setTimeout(resolve, MIN_TRANSITION_MS))
 
       const [nextImage] = await Promise.all([
-        fetchRandomFoodImage(controller.signal),
+        fetchRandomFoodImage(controller.signal, {
+          excludedIds: recentImageIdsRef.current,
+        }),
         waitTransition,
       ])
 
@@ -267,6 +280,7 @@ export default function App() {
       const fallbackDiscovery = getDiscoveryFallback()
 
       setImage(nextImage)
+      rememberImageId(nextImage.id)
       setDiscovery({
         topic: nextTopic,
         story:
@@ -285,7 +299,7 @@ export default function App() {
       }
       setStatus('error')
     }
-  }, [])
+  }, [rememberImageId])
 
   useEffect(() => {
     const initialRequestId = window.setTimeout(() => {
