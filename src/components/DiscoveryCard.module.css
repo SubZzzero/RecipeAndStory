@@ -79,6 +79,7 @@
   border-radius: calc(var(--radius-m) - 0.45rem);
   object-fit: cover;
   background: #f5d6ad;
+  transition: opacity 0.35s ease, filter 0.35s ease;
 }
 
 .button {
@@ -121,8 +122,9 @@
   outline-offset: 3px;
 }
 
-.loading {
-  opacity: 0.78;
+.loading .image {
+  opacity: 0.82;
+  filter: saturate(85%) brightness(96%);
 }
 
 @media (max-width: 42rem) {

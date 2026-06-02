@@ -287,9 +287,9 @@ export default function App() {
           storyResult.status === 'fulfilled'
             ? storyResult.value
             : {
-                ...fallbackDiscovery.story,
-                topicLabel: nextTopic.label,
-              },
+              ...fallbackDiscovery.story,
+              topicLabel: nextTopic.label,
+            },
         recipe: recipeResult.status === 'fulfilled' ? recipeResult.value : null,
       })
       setStatus('success')
@@ -424,7 +424,7 @@ export default function App() {
 
           <aside className={styles.companionPanel} aria-label="Food story and recipe">
             <DiscoveryCard
-              eyebrow="Today’s food story"
+              eyebrow="Food story"
               title={storyTitle}
               text={storyText}
               imageUrl={storyImageUrl}
@@ -436,7 +436,7 @@ export default function App() {
             />
 
             <DiscoveryCard
-              eyebrow="Today’s recipe"
+              eyebrow="Recipe"
               title={recipeTitle}
               text={recipeText}
               imageUrl={discovery.recipe?.imageUrl || image.imageUrl}

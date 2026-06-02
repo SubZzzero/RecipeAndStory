@@ -108,7 +108,7 @@ function getCuratedStory(topic) {
 }
 
 function getWikipediaImage(data) {
-  const imageUrl = data.thumbnail?.source || data.originalimage?.source
+  const imageUrl = data.originalimage?.source || data.thumbnail?.source
 
   if (!imageUrl) {
     return {}
