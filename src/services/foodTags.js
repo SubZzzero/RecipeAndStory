@@ -2,7 +2,7 @@ const GENERIC_TOPIC = {
   id: 'food',
   label: 'Food',
   wikiTitle: 'Food',
-  recipeQueries: ['Chicken', 'Pasta', 'Rice'],
+  recipeQueries: [],
   synonyms: ['food', 'meal', 'cuisine', 'dish'],
 }
 
@@ -124,7 +124,21 @@ const FOOD_TOPICS = [
     label: 'Strawberry',
     wikiTitle: 'Strawberry',
     recipeQueries: ['Strawberry'],
-    synonyms: ['strawberry', 'strawberries', 'berry', 'berries'],
+    synonyms: ['strawberry', 'strawberries'],
+  },
+  {
+    id: 'grape',
+    label: 'Grape',
+    wikiTitle: 'Grape',
+    recipeQueries: ['Grape', 'Grapes'],
+    synonyms: ['grape', 'grapes'],
+  },
+  {
+    id: 'blueberry',
+    label: 'Blueberry',
+    wikiTitle: 'Blueberry',
+    recipeQueries: ['Blueberry', 'Blueberries'],
+    synonyms: ['blueberry', 'blueberries'],
   },
   {
     id: 'lemon',
@@ -254,37 +268,6 @@ const FOOD_TOPICS = [
   },
 ]
 
-const GENERIC_TAGS = new Set([
-  'background',
-  'bowl',
-  'closeup',
-  'cooking',
-  'delicious',
-  'dinner',
-  'drink',
-  'fresh',
-  'fruit',
-  'gourmet',
-  'healthy',
-  'ingredient',
-  'kitchen',
-  'life',
-  'lunch',
-  'meal',
-  'organic',
-  'plate',
-  'photo',
-  'photography',
-  'restaurant',
-  'still',
-  'still life',
-  'table',
-  'tasty',
-  'vegetable',
-  'vegetables',
-  'wood',
-])
-
 function normalizeTag(tag) {
   return tag
     .toLowerCase()
@@ -314,27 +297,15 @@ export function resolveFoodTopic(tags = []) {
   if (directMatch) {
     return {
       ...directMatch,
+      confidence: 'high',
       isFallback: false,
-      triedTags: candidates,
-    }
-  }
-
-  const fallbackTag = candidates.find((tag) => !GENERIC_TAGS.has(tag))
-
-  if (fallbackTag) {
-    return {
-      id: fallbackTag,
-      label: fallbackTag.replace(/\b\w/g, (letter) => letter.toUpperCase()),
-      wikiTitle: fallbackTag,
-      recipeQueries: [fallbackTag],
-      synonyms: [fallbackTag],
-      isFallback: true,
       triedTags: candidates,
     }
   }
 
   return {
     ...GENERIC_TOPIC,
+    confidence: 'none',
     isFallback: true,
     triedTags: candidates,
   }

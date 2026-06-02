@@ -142,19 +142,18 @@ function getStatusMessage(status) {
 }
 
 function getPreviewRecipeText(recipe) {
-  if (!recipe) return 'Looking for a recipe that fits this image.'
+  if (!recipe) return 'No reliable recipe match found for this detected food topic.'
 
-  const intro = recipe.isExactMatch ? 'Matched from the detected food tag.' : 'A related inspiration pick.'
   const area = recipe.area ? `${recipe.area} ` : ''
   const category = recipe.category ? `${recipe.category.toLowerCase()} recipe` : 'recipe'
 
-  return `${intro} This ${area}${category} comes with ingredients and full cooking instructions.`
+  return `Matched from the detected food tag. This ${area}${category} comes with ingredients and full cooking instructions.`
 }
 
 function getRecipeMeta(recipe) {
-  if (!recipe) return 'Searching TheMealDB'
+  if (!recipe) return 'No verified TheMealDB match'
 
-  const parts = [recipe.isExactMatch ? 'Tag match' : 'Inspiration']
+  const parts = ['Tag match']
 
   if (recipe.area) parts.push(recipe.area)
   if (recipe.category) parts.push(recipe.category)
@@ -205,6 +204,7 @@ function getDiscoveryFallback() {
     recipe: null,
     topic: {
       label: 'Food',
+      confidence: 'none',
       isFallback: true,
     },
   }
@@ -384,7 +384,7 @@ export default function App() {
     : discovery.story.excerpt
   const recipeTitle = isLoading
     ? 'Finding a related recipe'
-    : discovery.recipe?.title || 'Recipe inspiration'
+    : discovery.recipe?.title || 'No reliable recipe match'
   const recipeText = isLoading
     ? 'Checking TheMealDB for a recipe that fits the detected food topic.'
     : getPreviewRecipeText(discovery.recipe)
@@ -441,10 +441,13 @@ export default function App() {
               text={recipeText}
               imageUrl={discovery.recipe?.imageUrl || image.imageUrl}
               imageAlt={discovery.recipe?.title || image.imageAlt}
-              meta={getRecipeMeta(discovery.recipe)}
-              buttonLabel="View full recipe"
+              meta={isLoading ? 'Checking TheMealDB' : getRecipeMeta(discovery.recipe)}
+              buttonLabel={isLoading ? 'Checking recipe' : discovery.recipe ? 'View full recipe' : 'No recipe match'}
+              disabled={!isLoading && !discovery.recipe}
               isLoading={isLoading}
-              onOpen={() => setActiveDetail('recipe')}
+              onOpen={() => {
+                if (discovery.recipe) setActiveDetail('recipe')
+              }}
             />
           </aside>
         </div>

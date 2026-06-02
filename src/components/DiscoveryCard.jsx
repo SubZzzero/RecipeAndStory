@@ -8,9 +8,12 @@ export default function DiscoveryCard({
   imageAlt,
   meta,
   buttonLabel,
+  disabled = false,
   isLoading,
   onOpen,
 }) {
+  const isButtonDisabled = isLoading || disabled
+
   return (
     <article className={`${styles.card} ${isLoading ? styles.loading : ''}`}>
       <div className={styles.copy}>
@@ -24,7 +27,7 @@ export default function DiscoveryCard({
         <img className={styles.image} src={imageUrl} alt={imageAlt} loading="lazy" />
       ) : null}
 
-      <button className={styles.button} type="button" disabled={isLoading} onClick={onOpen}>
+      <button className={styles.button} type="button" disabled={isButtonDisabled} onClick={onOpen}>
         {buttonLabel}
       </button>
     </article>

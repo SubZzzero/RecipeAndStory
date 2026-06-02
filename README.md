@@ -1,14 +1,14 @@
 # Foodsum
 
-Foodsum is a React + Vite app that turns random high-resolution Pixabay food photos into a small food discovery: image, detected topic, short story, and recipe inspiration.
+Foodsum is a React + Vite app that turns random high-resolution Pixabay food photos into a small food discovery: image, detected topic, short story, and a verified recipe match when one is available.
 
 ## Features
 
 - Random food photo on initial load.
 - "Random photo" button to fetch a new image.
-- Pixabay tag normalization with a curated food-topic resolver.
+- Pixabay tag normalization with a confidence-gated curated food-topic resolver.
 - Food story cards from curated notes with Wikipedia summary fallback.
-- Recipe cards from TheMealDB with related inspiration fallback.
+- Recipe cards from TheMealDB with strict topic matching and no unrelated random fallback.
 - Detail modals for full stories, instructions, ingredients, and source links.
 - Smooth transition between images.
 - Dynamic background color based on the selected photo.

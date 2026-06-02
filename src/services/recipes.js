@@ -56,12 +56,11 @@ async function filterByIngredient(query, signal) {
   return details.meals?.[0] || null
 }
 
-async function getRandomMeal(signal) {
-  const data = await requestMealDb('random.php', signal)
-  return data.meals?.[0] || null
-}
-
 export async function fetchRecipeForTopic(topic, signal) {
+  if (topic.confidence !== 'high') {
+    return null
+  }
+
   const queries = [...new Set([...(topic.recipeQueries || []), ...(topic.synonyms || [])])]
 
   for (const query of queries) {
@@ -69,7 +68,7 @@ export async function fetchRecipeForTopic(topic, signal) {
 
     if (meal) {
       return toRecipe(meal, {
-        isExactMatch: !topic.isFallback,
+        isExactMatch: true,
         matchedQuery: query,
       })
     }
@@ -80,20 +79,11 @@ export async function fetchRecipeForTopic(topic, signal) {
 
     if (meal) {
       return toRecipe(meal, {
-        isExactMatch: !topic.isFallback,
+        isExactMatch: true,
         matchedQuery: query,
       })
     }
   }
 
-  const randomMeal = await getRandomMeal(signal)
-
-  if (!randomMeal) {
-    return null
-  }
-
-  return toRecipe(randomMeal, {
-    isExactMatch: false,
-    matchedQuery: 'random inspiration',
-  })
+  return null
 }

@@ -1,3 +1,5 @@
+import { resolveFoodTopic } from './foodTags'
+
 const PIXABAY_API_URL = 'https://pixabay.com/api/'
 const RESULTS_PER_PAGE = 50
 const MAX_RANDOM_PAGE = 10
@@ -19,6 +21,23 @@ function parseTags(tags) {
 function pickRandomHit(hits) {
   const randomIndex = Math.floor(Math.random() * hits.length)
   return hits[randomIndex]
+}
+
+function toImage(hit) {
+  const tags = parseTags(hit.tags)
+
+  return {
+    id: hit.id,
+    imageUrl: hit.largeImageURL,
+    imageAlt: hit.tags || 'Food photo',
+    imageLink: hit.pageURL || hit.largeImageURL,
+    author: hit.user || 'Unknown author',
+    tags,
+  }
+}
+
+function isHighConfidenceFoodHit(hit) {
+  return resolveFoodTopic(parseTags(hit.tags)).confidence === 'high'
 }
 
 export async function fetchRandomFoodImage(signal, options = {}) {
@@ -54,21 +73,15 @@ export async function fetchRandomFoodImage(signal, options = {}) {
       continue
     }
 
-    fallbackHits = data.hits
+    const highConfidenceHits = data.hits.filter(isHighConfidenceFoodHit)
+    if (highConfidenceHits.length > 0) {
+      fallbackHits = highConfidenceHits
+    }
 
-    const freshHits = data.hits.filter((hit) => !excludedIds.has(hit.id))
+    const freshHits = highConfidenceHits.filter((hit) => !excludedIds.has(hit.id))
     if (freshHits.length > 0) {
       const hit = pickRandomHit(freshHits)
-      const tags = parseTags(hit.tags)
-
-      return {
-        id: hit.id,
-        imageUrl: hit.largeImageURL,
-        imageAlt: hit.tags || 'Food photo',
-        imageLink: hit.pageURL || hit.largeImageURL,
-        author: hit.user || 'Unknown author',
-        tags,
-      }
+      return toImage(hit)
     }
   }
 
@@ -77,14 +90,5 @@ export async function fetchRandomFoodImage(signal, options = {}) {
   }
 
   const hit = pickRandomHit(fallbackHits)
-  const tags = parseTags(hit.tags)
-
-  return {
-    id: hit.id,
-    imageUrl: hit.largeImageURL,
-    imageAlt: hit.tags || 'Food photo',
-    imageLink: hit.pageURL || hit.largeImageURL,
-    author: hit.user || 'Unknown author',
-    tags,
-  }
+  return toImage(hit)
 }
