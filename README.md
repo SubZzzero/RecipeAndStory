@@ -1,6 +1,12 @@
-# Foodsum
+# RecipeAndStory
 
-Foodsum is a React + Vite app that turns random high-resolution Pixabay food photos into a small food discovery: image, detected topic, short story, and a verified recipe match when one is available.
+[Live Demo](https://recipeandstory.web.app/)
+
+![RecipeAndStory preview](public/preview.png)
+
+RecipeAndStory is a React and Vite web application that turns random food photos into small discovery cards with context and recipes. It fetches images from the Pixabay API, resolves a food topic from image tags, loads a short background note through the Wikipedia Summary API, and matches a relevant recipe from TheMealDB.
+
+The project demonstrates external API integration, asynchronous state handling, fallback logic, modal UI, dynamic visual updates, and clean data presentation. Its purpose is to make food browsing more meaningful by connecting an image with context, source information, and a practical recipe.
 
 ## Features
 
