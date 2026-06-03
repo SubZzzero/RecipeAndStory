@@ -4,8 +4,8 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
-        <span className={styles.brand} aria-label="Foodsum logo">
-          F.
+        <span className={styles.brand} aria-label="RecipeAndStory logo">
+          R.
         </span>
         <a
           className={styles.github}
