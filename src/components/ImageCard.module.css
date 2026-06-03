@@ -1,6 +1,6 @@
 .card {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, auto) auto 42px;
   gap: var(--space-2);
   width: min(100%, 70rem);
   margin-inline: auto;
@@ -17,8 +17,10 @@
   border-radius: calc(var(--radius-l) - 0.5rem);
   overflow: hidden;
   background: #f5d6ad;
-  height: clamp(11rem, 38dvh, 18rem);
+  width: 100%;
   aspect-ratio: 4 / 3;
+  min-height: clamp(13rem, 34dvh, 24rem);
+  max-height: clamp(18rem, 42dvh, 29rem);
 }
 
 .imageLink[aria-disabled='true'] {
@@ -29,6 +31,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   transition: opacity 0.35s ease, filter 0.35s ease;
 }
 
@@ -44,14 +47,21 @@
 
 .meta {
   display: grid;
+  grid-template-rows: 3.1rem auto 1.45rem;
   align-content: start;
   gap: 0.75rem;
   min-height: 0;
+  overflow: hidden;
 }
 
 .status {
   margin: 0;
   font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.06rem);
+  line-height: 1.45;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .infoPanel {
@@ -65,6 +75,9 @@
 }
 
 .infoPanel > div {
+  display: grid;
+  grid-template-rows: auto 1.5rem;
+  align-content: start;
   min-width: 0;
   padding-inline: 0.75rem;
 }
@@ -104,14 +117,19 @@
 
 .tags {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.35rem;
-  max-height: 3.35rem;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 1.5rem;
+  max-height: 1.5rem;
   overflow: hidden;
 }
 
 .tags span {
-  max-width: min(100%, 9.5rem);
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: none;
   padding: 0.22rem 0.5rem;
   border-radius: 999px;
   color: var(--text-main);
@@ -128,13 +146,16 @@
   margin: 0;
   color: var(--text-muted);
   font-size: clamp(0.85rem, 0.78rem + 0.25vw, 0.98rem);
+  line-height: 1.45;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .actions {
   display: grid;
   justify-items: center;
   align-items: center;
-  padding-top: 0.35rem;
 }
 
 .loading .image {
@@ -149,13 +170,18 @@
   }
 
   .imageLink {
-    height: clamp(16rem, 46dvh, 27rem);
+    min-height: clamp(18rem, 40dvh, 27rem);
   }
 }
 
 @media (max-width: 42rem) {
+  .meta {
+    grid-template-rows: 3.1rem auto 1.45rem;
+  }
+
   .infoPanel {
     grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 3.25rem);
     gap: 0.7rem;
   }
 
@@ -172,6 +198,7 @@
 
 @media (orientation: landscape) and (max-height: 34rem) {
   .imageLink {
-    height: 12rem;
+    min-height: 12rem;
+    max-height: 12rem;
   }
 }

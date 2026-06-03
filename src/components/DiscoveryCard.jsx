@@ -1,4 +1,5 @@
 import styles from './DiscoveryCard.module.css'
+import LottieAnimation from './LottieAnimation'
 
 export default function DiscoveryCard({
   eyebrow,
@@ -6,6 +7,8 @@ export default function DiscoveryCard({
   text,
   imageUrl,
   imageAlt,
+  animationUrl,
+  animationLabel = 'Animated illustration',
   meta,
   buttonLabel,
   disabled = false,
@@ -23,7 +26,9 @@ export default function DiscoveryCard({
         <p className={styles.text}>{text}</p>
       </div>
 
-      {imageUrl ? (
+      {animationUrl ? (
+        <LottieAnimation className={styles.animation} path={animationUrl} label={animationLabel} />
+      ) : imageUrl ? (
         <img className={styles.image} src={imageUrl} alt={imageAlt} loading="lazy" />
       ) : null}
 

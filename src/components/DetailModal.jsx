@@ -40,7 +40,6 @@ export default function DetailModal({ title, subtitle, imageUrl, imageAlt, child
           {sourceUrl ? (
             <a className={styles.source} href={sourceUrl} target="_blank" rel="noreferrer">
               Open source
-              <span aria-hidden="true">→</span>
             </a>
           ) : null}
         </div>

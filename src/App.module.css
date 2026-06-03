@@ -7,18 +7,17 @@
 .main {
   width: var(--container);
   margin-inline: auto;
-  padding: var(--space-2) 0 var(--space-2);
+  padding: var(--space-3) 0 var(--space-4);
   display: grid;
-  gap: 0.75rem;
-  align-content: center;
-  min-height: 0;
+  gap: clamp(1rem, 1.6dvh, 1.5rem);
+  align-content: start;
 }
 
 .hero {
   text-align: center;
   display: grid;
   gap: 0.35rem;
-  transform: translateY(clamp(-0.9rem, -1.2dvh, -0.35rem));
+  min-width: 0;
 }
 
 .eyebrow {
@@ -32,6 +31,7 @@
 
 .title {
   margin: 0;
+  max-width: 100%;
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 1.2rem + 2.1vw, 3.4rem);
   line-height: 1.04;
@@ -41,8 +41,9 @@
 
 .subtitle {
   margin: 0 auto;
+  width: min(62ch, 100%);
   color: var(--text-muted);
-  max-width: 62ch;
+  max-width: min(62ch, 100%);
   font-size: clamp(0.9rem, 0.86rem + 0.24vw, 1.05rem);
   line-height: 1.35;
 }
@@ -52,7 +53,6 @@
   gap: var(--space-3);
   width: min(100%, 82rem);
   margin-inline: auto;
-  align-self: center;
   align-items: stretch;
 }
 
@@ -64,10 +64,9 @@
 
 .companionPanel {
   display: grid;
-  grid-template-rows: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(17rem, 1fr));
   gap: var(--space-3);
   min-width: 0;
-  min-height: 0;
 }
 
 .companionPanel > * {
@@ -164,18 +163,31 @@
 
 @media (min-width: 48rem) {
   .main {
-    gap: 0.75rem;
+    padding-top: var(--space-3);
+  }
+}
+
+@media (max-width: 42rem) {
+  .title {
+    max-width: 10.5em;
+    margin-inline: auto;
+    font-size: clamp(2rem, 1.55rem + 2vw, 2.45rem);
+  }
+
+  .subtitle {
+    width: min(100%, 22rem);
   }
 }
 
 @media (min-width: 70rem) {
   .main {
-    gap: 1rem;
+    align-content: center;
+    padding-block: var(--space-3);
   }
 
   .discoveryGrid {
     grid-template-columns: minmax(0, 1.04fr) minmax(29rem, 0.96fr);
-    height: clamp(42rem, 70dvh, 49rem);
+    height: clamp(40rem, 68dvh, 47rem);
   }
 
   .photoPanel {

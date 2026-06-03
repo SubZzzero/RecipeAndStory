@@ -1,6 +1,8 @@
 import styles from './ImageCard.module.css'
 import RandomButton from './RandomButton'
 
+const MAX_VISIBLE_TAGS = 4
+
 export default function ImageCard({
   imageUrl,
   imageAlt,
@@ -14,7 +16,7 @@ export default function ImageCard({
   onRandomPhoto,
 }) {
   const cardClass = `${styles.card} ${status === 'loading' ? styles.loading : ''}`
-  const visibleTags = tags.slice(0, 4)
+  const visibleTags = tags.slice(0, MAX_VISIBLE_TAGS)
 
   return (
     <section className={cardClass} aria-live="polite">
@@ -49,7 +51,11 @@ export default function ImageCard({
             <span className={styles.infoLabel}>Image tags</span>
             <div className={styles.tags} aria-label="Image tags">
               {visibleTags.length > 0 ? (
-                visibleTags.map((tag) => <span key={tag}>{tag}</span>)
+                visibleTags.map((tag) => (
+                  <span key={tag} title={tag}>
+                    {tag}
+                  </span>
+                ))
               ) : (
                 <span>food</span>
               )}

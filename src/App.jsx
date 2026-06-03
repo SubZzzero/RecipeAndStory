@@ -391,6 +391,8 @@ export default function App() {
   const topicLabel = discovery.topic?.label || 'Food'
   const storyImageUrl = discovery.story.imageUrl || image.imageUrl
   const storyImageAlt = discovery.story.imageAlt || image.imageAlt
+  const recipeImageUrl = discovery.recipe?.imageUrl || ''
+  const recipeAnimationUrl = discovery.recipe ? '' : '/lotie/cat.json'
   const recipeSteps = discovery.recipe ? getRecipeSteps(discovery.recipe.instructions) : []
 
   return (
@@ -430,7 +432,7 @@ export default function App() {
               imageUrl={storyImageUrl}
               imageAlt={storyImageAlt}
               meta={isLoading ? 'Resolving tags' : discovery.story.sourceLabel}
-              buttonLabel="Read full story"
+              buttonLabel="Read story"
               isLoading={isLoading}
               onOpen={() => setActiveDetail('story')}
             />
@@ -439,8 +441,10 @@ export default function App() {
               eyebrow="Recipe"
               title={recipeTitle}
               text={recipeText}
-              imageUrl={discovery.recipe?.imageUrl || image.imageUrl}
+              imageUrl={recipeImageUrl}
               imageAlt={discovery.recipe?.title || image.imageAlt}
+              animationUrl={recipeAnimationUrl}
+              animationLabel="No recipe found animation"
               meta={isLoading ? 'Checking TheMealDB' : getRecipeMeta(discovery.recipe)}
               buttonLabel={isLoading ? 'Checking recipe' : discovery.recipe ? 'View full recipe' : 'No recipe match'}
               disabled={!isLoading && !discovery.recipe}
